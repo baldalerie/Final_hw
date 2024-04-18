@@ -1,0 +1,788 @@
+{
+	"info": {
+		"_postman_id": "0d690917-de15-42a7-9dc3-a8d55d8bede2",
+		"name": "GOLang-Transactions",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22138914"
+	},
+	"item": [
+		{
+			"name": "0.User 2 Create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {",
+							"var userData = JSON.parse(responseBody)",
+							"//pm.collectionVariables.set(\"TokenAuth\", tokenAuthSet);",
+							"//console.log(jsonData);",
+							"//console.log(jsonHeaders);",
+							"console.log(userData);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"John Doe\", \"email\":\"{{user_email_2}}\", \"password\":\"{{user_passwd_2}}\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "0.User 3 Create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {",
+							"var userData = JSON.parse(responseBody)",
+							"//pm.collectionVariables.set(\"TokenAuth\", tokenAuthSet);",
+							"//console.log(jsonData);",
+							"//console.log(jsonHeaders);",
+							"console.log(userData);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"John Doe\", \"email\":\"{{user_email_3}}\", \"password\":\"{{user_passwd_3}}\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "0.User 1 Create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {",
+							"var userData = JSON.parse(responseBody)",
+							"//pm.collectionVariables.set(\"TokenAuth\", tokenAuthSet);",
+							"//console.log(jsonData);",
+							"//console.log(jsonHeaders);",
+							"console.log(userData);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"John Doe\", \"email\":\"{{user_email_1}}\", \"password\":\"{{user_passwd_1}}\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.User2 Auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//var jsonData = JSON.parse(responseBody);",
+							"//var jsonHeaders = JSON.parse(responseHeaders);",
+							"",
+							"if (responseCode.code === 200) {",
+							"var tokenAuthSet = pm.response.headers.get(\"Token\");",
+							"pm.collectionVariables.set(\"TokenAuth\", tokenAuthSet);",
+							"",
+							"",
+							"//console.log(jsonData);",
+							"//console.log(jsonHeaders);",
+							"console.log(tokenAuthSet);",
+							"//",
+							"",
+							"",
+							" function parseJwt (token,part) {",
+							"   var base64Url = token.split('.')[part];",
+							"   var words = CryptoJS.enc.Base64.parse(base64Url);",
+							"   var jsonPayload = CryptoJS.enc.Utf8.stringify(words);",
+							"   return  JSON.parse(jsonPayload);",
+							"};",
+							"",
+							"var jwtInfo ={};",
+							"jwtInfo.size = tokenAuthSet.length;",
+							"jwtInfo.header = parseJwt(tokenAuthSet,0);",
+							"jwtInfo.payload = parseJwt(tokenAuthSet,1);",
+							"jwtInfo.signature = tokenAuthSet.split('.')[2];",
+							"jwtInfo.expires = ((jwtInfo.payload.exp-Date.now().valueOf()/1000)/60).toFixed(1);",
+							"console.log(jwtInfo);",
+							"console.log(jwtInfo.payload.user_id);",
+							"pm.collectionVariables.set(\"user_id\", jwtInfo.payload.user_id)",
+							"var template = `",
+							"<b>JWT  Size:{{response.size}}Bytes. Expires in {{response.expires}} minutes</b><br>",
+							"<b>Header </b>",
+							"    <table>",
+							"        <tr><th>Property</th><th>Value</th></tr>",
+							"        {{#each response.header}}",
+							"            <tr><td>{{@key}}</td><td>{{.}}</td></tr>",
+							"        {{/each}}",
+							"    </table>",
+							"<b>Payload</b>",
+							"    <table>",
+							"        <tr><th>Property</th><th>Value</th></tr>",
+							"        {{#each response.payload}}",
+							"            <tr><td>{{@key}}</td><td>{{.}}</td></tr>",
+							"        {{/each}}",
+							"    </table>",
+							" <b>Claims</b>",
+							"    <table bgcolor=\"#FFFFFF\">",
+							"        <tr><th>Claim</th><th>Value</th></tr>",
+							"        {{#each response.payload.Claims}}",
+							"            <tr>",
+							"                {{#each this}}",
+							"                    <td>{{.}}</td>       ",
+							"                {{/each}}",
+							"            </tr>",
+							"        {{/each}}",
+							"    </table>",
+							"  <i>signature:{{response.signature}}</i>",
+							"`;",
+							"pm.visualizer.set(template, {response: jwtInfo});",
+							"",
+							"",
+							"",
+							"//",
+							"",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"{{user_email_2}}\", \"password\":\"{{user_passwd_2}}\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.User1 Auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//var jsonData = JSON.parse(responseBody);",
+							"//var jsonHeaders = JSON.parse(responseHeaders);",
+							"",
+							"if (responseCode.code === 200) {",
+							"var tokenAuthSet = pm.response.headers.get(\"Token\");",
+							"pm.collectionVariables.set(\"TokenAuth\", tokenAuthSet);",
+							"",
+							"",
+							"//console.log(jsonData);",
+							"//console.log(jsonHeaders);",
+							"console.log(tokenAuthSet);",
+							"//",
+							"",
+							"",
+							" function parseJwt (token,part) {",
+							"   var base64Url = token.split('.')[part];",
+							"   var words = CryptoJS.enc.Base64.parse(base64Url);",
+							"   var jsonPayload = CryptoJS.enc.Utf8.stringify(words);",
+							"   return  JSON.parse(jsonPayload);",
+							"};",
+							"",
+							"var jwtInfo ={};",
+							"jwtInfo.size = tokenAuthSet.length;",
+							"jwtInfo.header = parseJwt(tokenAuthSet,0);",
+							"jwtInfo.payload = parseJwt(tokenAuthSet,1);",
+							"jwtInfo.signature = tokenAuthSet.split('.')[2];",
+							"jwtInfo.expires = ((jwtInfo.payload.exp-Date.now().valueOf()/1000)/60).toFixed(1);",
+							"console.log(jwtInfo);",
+							"console.log(jwtInfo.payload.user_id);",
+							"pm.collectionVariables.set(\"user_id\", jwtInfo.payload.user_id)",
+							"var template = `",
+							"<b>JWT  Size:{{response.size}}Bytes. Expires in {{response.expires}} minutes</b><br>",
+							"<b>Header </b>",
+							"    <table>",
+							"        <tr><th>Property</th><th>Value</th></tr>",
+							"        {{#each response.header}}",
+							"            <tr><td>{{@key}}</td><td>{{.}}</td></tr>",
+							"        {{/each}}",
+							"    </table>",
+							"<b>Payload</b>",
+							"    <table>",
+							"        <tr><th>Property</th><th>Value</th></tr>",
+							"        {{#each response.payload}}",
+							"            <tr><td>{{@key}}</td><td>{{.}}</td></tr>",
+							"        {{/each}}",
+							"    </table>",
+							" <b>Claims</b>",
+							"    <table bgcolor=\"#FFFFFF\">",
+							"        <tr><th>Claim</th><th>Value</th></tr>",
+							"        {{#each response.payload.Claims}}",
+							"            <tr>",
+							"                {{#each this}}",
+							"                    <td>{{.}}</td>       ",
+							"                {{/each}}",
+							"            </tr>",
+							"        {{/each}}",
+							"    </table>",
+							"  <i>signature:{{response.signature}}</i>",
+							"`;",
+							"pm.visualizer.set(template, {response: jwtInfo});",
+							"",
+							"",
+							"",
+							"//",
+							"",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"{{user_email_1}}\", \"password\":\"{{user_passwd_1}}\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.1.Add expense",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "Bearer {{TokenAuth}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTA1MTM3MzQsInVzZXJfaWQiOjR9.D7YnMNY6o-07cJ37oUciISumH_WBv97FZFQNPG7k9so"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": ,\n    \"amount\": 100.50,\n    \"currency\": \"USD\",\n    \"type\": \"expense\",\n    \"category\": \"Food\",\n    \"date\": \"2023-03-13T14:00:00Z\",\n    \"description\": \"Lunch at restaurant\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.2.Add USD transfer",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "Bearer {{TokenAuth}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTA1MTM3MzQsInVzZXJfaWQiOjR9.D7YnMNY6o-07cJ37oUciISumH_WBv97FZFQNPG7k9so"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": 4,\n    \"amount\": 100,\n    \"currency\": \"USD\",\n    \"type\": \"transfer\",\n    \"category\": \"SBP\",\n    \"date\": \"2023-03-13T14:00:00Z\",\n    \"description\": \"Service 01\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.2.Add GBP transfer",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "Bearer {{TokenAuth}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTA1MTM3MzQsInVzZXJfaWQiOjR9.D7YnMNY6o-07cJ37oUciISumH_WBv97FZFQNPG7k9so"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": 4,\n    \"amount\": 100,\n    \"currency\": \"GBP\",\n    \"type\": \"transfer\",\n    \"category\": \"SBP\",\n    \"date\": \"2023-03-13T14:00:00Z\",\n    \"description\": \"Service GBP\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.2.Add RUB transfer",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "Bearer {{TokenAuth}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTA1MTM3MzQsInVzZXJfaWQiOjR9.D7YnMNY6o-07cJ37oUciISumH_WBv97FZFQNPG7k9so"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": 4,\n    \"amount\": 1000,\n    \"currency\": \"RUB\",\n    \"type\": \"transfer\",\n    \"category\": \"SBP\",\n    \"date\": \"2023-03-13T14:00:00Z\",\n    \"description\": \"Service 02\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Transactions",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TokenAuth}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTA1MTM3MzQsInVzZXJfaWQiOjR9.D7YnMNY6o-07cJ37oUciISumH_WBv97FZFQNPG7k9so"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Transactions ID Convert",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TokenAuth}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTA1MTM3MzQsInVzZXJfaWQiOjR9.D7YnMNY6o-07cJ37oUciISumH_WBv97FZFQNPG7k9so"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/transactions/:id?currency=BZN",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions",
+						":id"
+					],
+					"query": [
+						{
+							"key": "currency",
+							"value": "BZN"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Update Transactions",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TokenAuth}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTA1MTM3MzQsInVzZXJfaWQiOjR9.D7YnMNY6o-07cJ37oUciISumH_WBv97FZFQNPG7k9so"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": 1,\n    \"amount\": 200,\n    \"currency\": \"USD\",\n    \"type\": \"transfer\",\n    \"category\": \"SBP\",\n    \"date\": \"2023-03-13T14:00:00Z\",\n    \"description\": \"Service 01\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/transactions/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "6"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Delete Transactions",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TokenAuth}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTA1MTM3MzQsInVzZXJfaWQiOjR9.D7YnMNY6o-07cJ37oUciISumH_WBv97FZFQNPG7k9so"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:8080/transactions/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "TokenAuth",
+			"value": ""
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_email_1",
+			"value": "john.doe1@example.com",
+			"type": "string"
+		},
+		{
+			"key": "user_passwd_1",
+			"value": "passwd01",
+			"type": "string"
+		},
+		{
+			"key": "user_email_2",
+			"value": "john.doe2@example.com",
+			"type": "string"
+		},
+		{
+			"key": "user_passwd_2",
+			"value": "passwd01",
+			"type": "string"
+		},
+		{
+			"key": "transactionID",
+			"value": "3"
+		},
+		{
+			"key": "user_email_3\n",
+			"value": "john.doe3@example.com",
+			"type": "string"
+		},
+		{
+			"key": "user_passwd_3",
+			"value": "passwd01",
+			"type": "string"
+		}
+	]
+}

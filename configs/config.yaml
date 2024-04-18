@@ -1,0 +1,12 @@
+database:
+  host: "localhost"
+  port: 5432
+  user: "root"
+  password: "12345"
+  dbname: "transactionsdb"
+  sslmode: "disable"
+  timezone: "Europe/London"
+api:
+  host: "localhost"
+  port: 8080
+  sslmode: "disable"
